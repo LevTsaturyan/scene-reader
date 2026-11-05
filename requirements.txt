@@ -1,0 +1,13 @@
+# torch с GPU ставится отдельно, см. README
+# gTTS ставится отдельно с --no-deps: он требует click<8.2, а huggingface_hub — click>=8.4.2
+torch==2.11.0
+torchvision==0.26.0
+transformers==5.21.0
+sentencepiece==0.2.2
+sacremoses==0.2.0
+easyocr==1.7.2
+pytesseract==0.3.13
+pillow==12.3.0
+numpy==2.5.4
+requests==2.34.2
+gradio==6.31.0
