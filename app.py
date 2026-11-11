@@ -8,6 +8,8 @@ from scene_reader.pipeline import run
 
 
 def process(image, mode, lang):
+    if image is None:
+        raise gr.Error("Загрузите или снимите фото")
     out_prefix = str(Path(tempfile.mkdtemp()) / "out")
     result = run(image, mode, lang, out_prefix=out_prefix)
     return result.original, result.translated, result.audio_translated, result.audio_original
@@ -16,7 +18,7 @@ def process(image, mode, lang):
 demo = gr.Interface(
     fn=process,
     inputs=[
-        gr.Image(type="pil", label="Фото"),
+        gr.Image(type="pil", sources=["upload", "webcam"], label="Фото"),
         gr.Radio(["auto", "text", "scene"], value="auto", label="Режим"),
         gr.Radio(["ru", "en"], value=config.TARGET_LANG, label="Язык"),
     ],
