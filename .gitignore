@@ -3,7 +3,6 @@ __pycache__/
 .pytest_cache/
 *.mp3
 run.py
-# фото со Street View, публиковать нельзя
-eval_photos/
 .gradio/
-HANDOFF.md
+*.wav
+models/
