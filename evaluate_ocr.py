@@ -1,5 +1,6 @@
 import argparse
 import time
+import re
 from collections import Counter
 from pathlib import Path
 
@@ -17,7 +18,9 @@ MAG_RATIOS = [1.0, 1.5, 2.0]
 
 
 def clean(text):
-    return " ".join(text.split()).lower()
+    text = text.lower().replace("ё", "е")
+    text = re.sub(r"[^\w\s]", " ", text)
+    return " ".join(text.split())
 
 
 def word_scores(refs, hyps):
