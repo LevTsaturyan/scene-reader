@@ -3,6 +3,12 @@ import pytest
 from scene_reader import speech
 
 
+@pytest.fixture(autouse=True)
+def use_gtts(monkeypatch):
+    """Тесты проверяют gTTS, даже если в терминале выбран Piper."""
+    monkeypatch.setattr(speech.config, "TTS_ENGINE", "gtts")
+
+
 @pytest.fixture
 def saved(monkeypatch):
     calls = []

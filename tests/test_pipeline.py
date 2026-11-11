@@ -55,3 +55,18 @@ def test_result_has_translation_and_audio(monkeypatch, img):
     assert result.translated == "[en] раз два три"
     assert result.audio_translated == "t.mp3"
     assert result.audio_original == "o.mp3"
+
+
+
+def test_exif_rotation_is_applied(monkeypatch):
+    seen = {}
+
+    def fake_describe(image):
+        seen["size"] = image.size
+        return "a brick wall"
+
+    monkeypatch.setattr(pipeline, "describe", fake_describe)
+    photo = Image.new("RGB", (10, 20))
+    photo.getexif()[274] = 6  # телефон записал поворот на 90 градусов
+    pipeline.run(photo, mode="scene")
+    assert seen["size"] == (20, 10)
