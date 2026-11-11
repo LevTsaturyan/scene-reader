@@ -29,9 +29,11 @@ def word_scores(refs, hyps):
     return found / expected, found / predicted if predicted else 0.0
 
 
-def load_samples():
+def load_samples(split):
     samples = []
-    for path in sorted(PHOTOS.glob("*.jpg")):
+    for path in sorted((PHOTOS / split).iterdir()):
+        if path.suffix.lower() not in {".jpg", ".jpeg", ".png"}:
+            continue
         img = ImageOps.exif_transpose(Image.open(path))
         ref = clean(path.with_suffix(".txt").read_text(encoding="utf-8-sig"))
         samples.append((path.name, img, ref))
@@ -63,9 +65,10 @@ def print_thresholds(samples, hyps):
 def main():
     parser = argparse.ArgumentParser(description="Сравнивает движки OCR на фото из eval_photos")
     parser.add_argument("--details", action="store_true", help="показать распознанный текст по каждому фото")
+    parser.add_argument("--split", choices=["dev", "test"], default="dev", help="набор фото")
     args = parser.parse_args()
 
-    samples = load_samples()
+    samples = load_samples(args.split)
     with_text = sum(1 for _, _, ref in samples if ref)
     print(f"фото: {len(samples)}, с текстом: {with_text}, без текста: {len(samples) - with_text}\n")
 
