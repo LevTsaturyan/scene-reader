@@ -13,6 +13,7 @@ from scene_reader.ocr import extract_easyocr, extract_tesseract, has_text
 PHOTOS = Path("eval_photos")
 THRESHOLDS = [1, 2, 3, 5]
 CONFIDENCES = [0.0, 0.1, 0.3, 0.5, 0.7]
+MAG_RATIOS = [1.0, 1.5, 2.0]
 
 
 def clean(text):
@@ -81,6 +82,8 @@ def main():
     for confidence in CONFIDENCES:
         easyocr_hyps[confidence] = evaluate(samples, f"EasyOCR, уверенность >= {confidence}",
                                             lambda img: extract_easyocr(img, min_confidence=confidence))
+    for mag in MAG_RATIOS:
+        evaluate(samples, f"EasyOCR, увеличение x{mag}", lambda img: extract_easyocr(img, mag_ratio=mag))
 
     print("\nTesseract с обработкой:")
     print_thresholds(samples, tesseract_hyps)

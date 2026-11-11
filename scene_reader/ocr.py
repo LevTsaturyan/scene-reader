@@ -20,8 +20,9 @@ def extract_text(img: Image.Image, engine: str = config.OCR_ENGINE) -> str:
     return extract_easyocr(img)
 
 
-def extract_easyocr(img: Image.Image, min_confidence: float = config.OCR_MIN_CONFIDENCE) -> str:
-    results = _load_easyocr().readtext(np.array(img.convert("RGB")))
+def extract_easyocr(img: Image.Image, min_confidence: float = config.OCR_MIN_CONFIDENCE,
+                    mag_ratio: float = config.OCR_MAG_RATIO) -> str:
+    results = _load_easyocr().readtext(np.array(img.convert("RGB")), mag_ratio=mag_ratio)
     return "\n".join(text for _, text, confidence in results if confidence >= min_confidence)
 
 

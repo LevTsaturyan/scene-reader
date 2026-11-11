@@ -40,7 +40,7 @@ def test_split_chunks_respects_token_limit():
 
 def test_easyocr_filters_low_confidence(monkeypatch):
     class FakeReader:
-        def readtext(self, image):
+        def readtext(self, image, **kwargs):
             return [(None, "ВЫХОД", 0.9), (None, "мусор", 0.1)]
 
     monkeypatch.setattr(ocr, "_load_easyocr", lambda: FakeReader())
