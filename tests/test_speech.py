@@ -32,3 +32,11 @@ def test_one_track_when_same_language(saved):
     paths = speech.speak("стена", "стена", "ru")
     assert paths == ("out_translated.mp3", None)
     assert len(saved) == 1
+
+
+def test_failed_tts_keeps_result(monkeypatch):
+    def fail(*args, **kwargs):
+        raise OSError("нет интернета")
+
+    monkeypatch.setattr(speech, "gTTS", fail)
+    assert speech.speak("стена", "стена", "ru") == (None, None)
